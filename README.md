@@ -19,3 +19,20 @@ DJI 무선 마이크·Zoom·Mac 녹음을 받아쓰고, 화자를 나눠 회의�
 - 문의·의견: hello@baryon.ai · Windows 버전 알림 신청은 [소개 페이지](https://baryonlabs.github.io/dji2note-releases/#windows)에서
 
 © 2026 Baryon Labs. All rights reserved.
+
+---
+
+## English
+
+DJI2Note is a Mac app that transcribes recordings from DJI wireless mics, Zoom and your Mac on-device, separates speakers, writes a summary that fits the situation with the AI you choose, and uploads it to Google Drive or Notion.
+**Made by Baryon Labs** · hello@baryon.ai · https://baryonlabs.github.io/dji2note-releases/en/
+
+This repository contains installers (releases) only. Get the latest version from [Releases](../../releases/latest).
+
+- Requires: Apple Silicon (M1 or later) Mac, macOS 14 or later. Free.
+- Install (one line in Terminal, opens without a security warning):
+  ```sh
+  curl -fsSL https://raw.githubusercontent.com/baryonlabs/dji2note-releases/main/install-app.sh | bash
+  ```
+- Documents: [User guide](legal/en/HELP.md) · [Data and AI notice](legal/en/DATA.md) · [Privacy policy](legal/en/PRIVACY.md) · [Terms of use](legal/en/TERMS.md) · [License](legal/en/LICENSE.md) · [Open source notices](legal/en/THIRD_PARTY.md) · [Copyright and trademarks](legal/en/COPYRIGHT.md)
+- Windows version notification: sign up on the [intro page](https://baryonlabs.github.io/dji2note-releases/en/#windows)

@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>DJI2Note</title>
+<link rel="alternate" hreflang="ko" href="https://baryonlabs.github.io/dji2note-releases/">
+<link rel="alternate" hreflang="en" href="https://baryonlabs.github.io/dji2note-releases/en/">
+<link rel="alternate" hreflang="x-default" href="https://baryonlabs.github.io/dji2note-releases/">
 <meta name="description" content="DJI 무선 마이크·Zoom·Mac 녹음을 받아쓰고 화자를 나눠 회의록 요약을 만들어 주는 Mac 앱. Made by Baryon Labs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,6 +50,9 @@
   .hero { display: grid; gap: 28px; }
   .brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   .brand b { font-family: var(--display); font-weight: 400; font-size: 20px; }
+  .brand-r { display: flex; align-items: center; gap: 8px 16px; flex-wrap: wrap; }
+  a.lang { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+  a.lang:hover { color: var(--a); border-bottom-color: var(--a); }
   .hero h1 .a { color: var(--a); } .hero h1 .b { color: var(--b); }
   .lede { font-size: 19px; max-width: 34em; color: var(--muted); }
   .lede strong { color: var(--ink); font-weight: 500; }
@@ -143,7 +149,10 @@
   <section class="hero">
     <div class="brand">
       <b>DJI2Note</b>
-      <span class="eyebrow">Made by Baryon Labs</span>
+      <span class="brand-r">
+        <a class="eyebrow lang" href="en/" hreflang="en" lang="en">English</a>
+        <span class="eyebrow">Made by Baryon Labs</span>
+      </span>
     </div>
     <h1>마이크를 꽂으면,<br><span class="a">대화</span>가 <span class="b">회의록</span>이 됩니다.</h1>
     <p class="lede">DJI 무선 마이크, Zoom, Mac 녹음을 <strong>내 Mac에서 받아쓰고</strong>, 누가 말했는지 나눈 뒤 <strong>상황에 맞는 요약</strong>을 만들어 Google Drive·Notion에 올려 둡니다.</p>
@@ -285,8 +294,8 @@
       <img src="shots/about.jpg" alt="DJI2Note '정보' 화면" width="1696" height="1426" loading="lazy">
       <div>
         <h3>정보</h3>
-        <p class="muted">버전, 소개 페이지, 문의와 안내 문서를 앱 안에서 바로 봅니다.</p>
-        <ul><li><b>문의하기</b> — 앱 버전·macOS가 들어간 메일 틀이 열려요</li><li><b>Windows 버전 알림 받기</b></li><li>사용법, 데이터·AI 안내, 개인정보 처리방침, 이용약관, 라이선스, 오픈소스 고지</li></ul>
+        <p class="muted">버전·업데이트, 소개 페이지, 문의, 사용 통계, 안내 문서를 앱 안에서 바로 봅니다.</p>
+        <ul><li><b>업데이트</b> — 새 버전 확인, 누르면 바로 설치</li><li><b>문의하기</b> — 앱 버전·macOS가 들어간 메일 틀이 열려요</li><li><b>Windows 버전 알림 받기</b></li><li><b>사용 통계</b> — 보낼 내용 그대로 보기, 끄기</li><li>사용법, 데이터·AI 안내, 개인정보 처리방침, 이용약관, 라이선스, 오픈소스 고지</li></ul>
         <p class="blurnote">메뉴바 아이콘의 <b>사용법</b>에서도 열 수 있어요.</p>
       </div>
     </div>
@@ -336,7 +345,7 @@
     </header>
     <div class="split">
     <img class="illus" src="illus/privacy.jpg" alt="방패로 보호된 노트북 안에서 소리가 글자로 바뀌고, 글자만 작은 문을 지나 멀리 구름으로 가는 그림" width="1536" height="1024" loading="lazy">
-    <p class="muted">받아쓰기는 Mac 안에서 합니다. 요약을 위해 대본 글자만 내가 고른 AI(Claude, OpenAI, Gemini 등)로 보내고, 올리기는 내가 연결한 Drive·Notion에만 합니다. 녹음 전에 함께 대화하는 분의 동의를 받아 주세요.</p>
+    <p class="muted">받아쓰기는 Mac 안에서 합니다. 요약을 위해 대본 글자만 내가 고른 AI(Claude, OpenAI, Gemini 등)로 보내고, 올리기는 내가 연결한 Drive·Notion에만 합니다. Baryon Labs에는 기능별 사용 횟수 같은 익명 통계만 가고, 정보 탭에서 끌 수 있어요. 녹음 전에 함께 대화하는 분의 동의를 받아 주세요.</p>
     </div>
   </section>
 
@@ -362,7 +371,7 @@
     <div class="docs">
       <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/HELP.md"><b>사용법</b><span>탭별 기능, 녹음 넣기, 문제 해결</span></a>
       <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/DATA.md"><b>데이터·AI 안내</b><span>AI에 무엇을 보내고 무엇을 안 보내는지</span></a>
-      <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/PRIVACY.md"><b>개인정보 처리방침</b><span>Baryon Labs가 받는 정보: 없음</span></a>
+      <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/PRIVACY.md"><b>개인정보 처리방침</b><span>익명 사용 통계 외에는 받지 않음 (끌 수 있음)</span></a>
       <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/TERMS.md"><b>이용약관</b><span>녹음 동의, AI 선택, 결과 확인</span></a>
       <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/LICENSE.md"><b>소프트웨어 이용 허락</b><span>무상 사용 범위와 제한</span></a>
       <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/THIRD_PARTY.md"><b>오픈소스 고지</b><span>Whisper, MLX 등 구성요소 라이선스</span></a>
