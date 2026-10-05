@@ -15,6 +15,7 @@ DJI 무선 마이크·Zoom·Mac 녹음을 받아쓰고, 화자를 나눠 회의�
   ```sh
   curl -fsSL https://raw.githubusercontent.com/baryonlabs/dji2note-releases/main/install.sh | bash
   ```
-- 사용 조건: [LICENSE.md](LICENSE.md)
+- 안내: [사용법](legal/HELP.md) · [데이터·AI 안내](legal/DATA.md) · [개인정보 처리방침](legal/PRIVACY.md) · [이용약관](legal/TERMS.md) · [이용 허락](LICENSE.md) · [오픈소스 고지](legal/THIRD_PARTY.md) · [저작권·상표](legal/COPYRIGHT.md)
+- 문의·의견: hello@baryon.ai · Windows 버전 알림 신청은 [소개 페이지](https://baryonlabs.github.io/dji2note-releases/#windows)에서
 
 © 2026 Baryon Labs. All rights reserved.

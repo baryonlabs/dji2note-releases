@@ -118,6 +118,22 @@
   .screen .blurnote { margin-top: 14px; font-size: 13px; color: var(--muted); }
   @media (max-width: 760px) { .screen { grid-template-columns: minmax(0, 1fr); } }
 
+  /* Windows 알림 · 문의 */
+  .notify { display: grid; gap: 10px; background: var(--paper); border: 1px solid var(--line); border-left: 4px solid var(--b); border-radius: 14px; padding: 16px 18px; max-width: 640px; }
+  .notify b { font-weight: 700; }
+  .notify p { color: var(--muted); font-size: 15px; }
+  .notify form { display: flex; flex-wrap: wrap; gap: 8px; }
+  .notify input { flex: 1 1 220px; min-width: 0; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 10px; padding: 10px 12px; font: 15px var(--body); }
+  .notify button, .ghost { border: 0; background: var(--b); color: #fff; border-radius: 10px; padding: 10px 16px; font: 700 15px var(--body); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+  .ghost { background: var(--paper); color: var(--ink); border: 1px solid var(--line); font-weight: 500; }
+  .notify small { color: var(--muted); font-size: 13px; }
+  .contact { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .docs { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .docs a { display: grid; gap: 2px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; text-decoration: none; color: var(--ink); }
+  .docs a span { color: var(--muted); font-size: 14px; }
+  .docs a:hover { border-color: var(--a); }
+  footer nav { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+
   footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 22px; }
 </style>
 </head>
@@ -131,6 +147,25 @@
     </div>
     <h1>마이크를 꽂으면,<br><span class="a">대화</span>가 <span class="b">회의록</span>이 됩니다.</h1>
     <p class="lede">DJI 무선 마이크, Zoom, Mac 녹음을 <strong>내 Mac에서 받아쓰고</strong>, 누가 말했는지 나눈 뒤 <strong>상황에 맞는 요약</strong>을 만들어 Google Drive·Notion에 올려 둡니다.</p>
+
+    <div class="get">
+      <a class="btn" href="https://github.com/baryonlabs/dji2note-releases/releases/latest">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
+        최신 버전 받기
+      </a>
+      <small>Apple Silicon(M1 이상) Mac · macOS 14 이상 · 무료<br>받아쓰기 모델(약 1.6GB)은 설치할 때 함께 내려받아요</small>
+    </div>
+
+    <div class="notify" id="windows">
+      <b>Windows 버전 알림 받기</b>
+      <p>이메일을 남겨 주시면 Windows 버전이 나올 때 메일로 알려 드려요.</p>
+      <form id="notify-form">
+        <label for="notify-email" class="eyebrow" hidden>이메일</label>
+        <input id="notify-email" type="email" required placeholder="name@example.com" autocomplete="email">
+        <button type="submit">알림 신청</button>
+      </form>
+      <small id="notify-msg">메일 앱이 열리면 <b>보내기</b>만 눌러 주세요. 메일 앱이 없으면 hello@baryon.ai 로 "Windows 알림"이라고 보내 주셔도 돼요. 출시 안내에만 쓰고, 안내 후 지웁니다.</small>
+    </div>
 
     <img class="illus" src="illus/hero.jpg" alt="클립 마이크를 단 두 사람이 대화하고, 노트북 위로 두 사람의 말이 색깔별로 나뉘어 올라가 할 일 목록이 있는 요약 한 장으로 합쳐지는 그림" width="1536" height="1024">
 
@@ -149,14 +184,6 @@
         <h3>할 일</h3>
         <ul><li><b>A</b> 계약서 메일 발송 (오늘)</li><li><b>B</b> 1차 시안 전달 (수)</li></ul>
       </div>
-    </div>
-
-    <div class="get">
-      <a class="btn" href="https://github.com/baryonlabs/dji2note-releases/releases/latest">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
-        최신 버전 받기
-      </a>
-      <small>Apple Silicon(M1 이상) Mac · macOS 14 이상 · 무료<br>받아쓰기 모델(약 1.6GB)은 설치할 때 함께 내려받아요</small>
     </div>
   </section>
 
@@ -207,6 +234,7 @@
       <button type="button" role="tab" id="t-general" aria-controls="p-general" aria-selected="false">일반</button>
       <button type="button" role="tab" id="t-ai" aria-controls="p-ai" aria-selected="false">AI</button>
       <button type="button" role="tab" id="t-drive" aria-controls="p-drive" aria-selected="false">연동</button>
+      <button type="button" role="tab" id="t-about" aria-controls="p-about" aria-selected="false">정보</button>
     </div>
     <div class="screen" role="tabpanel" id="p-history" aria-labelledby="t-history">
       <img src="shots/history.jpg" alt="DJI2Note '회의록' 화면" width="1696" height="1426" loading="lazy">
@@ -251,6 +279,15 @@
         <p class="muted">회의록을 둘 곳을 연결합니다.</p>
         <ul><li>Google Drive — Google Docs로 올리기, 여러 계정·폴더 선택</li><li>Notion — 회의마다 요약 페이지, 대본은 하위 페이지</li><li>업무 도구 — 회의록 공개(MCP 서버, 토큰 인증)와 봇에게 줄 연동 안내 복사</li></ul>
         <p class="blurnote">실제 화면입니다. 회의 내용·계정 정보는 흐리게 가렸어요.</p>
+      </div>
+    </div>
+    <div class="screen" role="tabpanel" id="p-about" aria-labelledby="t-about" hidden>
+      <img src="shots/about.jpg" alt="DJI2Note '정보' 화면" width="1696" height="1426" loading="lazy">
+      <div>
+        <h3>정보</h3>
+        <p class="muted">버전, 소개 페이지, 문의와 안내 문서를 앱 안에서 바로 봅니다.</p>
+        <ul><li><b>문의하기</b> — 앱 버전·macOS가 들어간 메일 틀이 열려요</li><li><b>Windows 버전 알림 받기</b></li><li>사용법, 데이터·AI 안내, 개인정보 처리방침, 이용약관, 라이선스, 오픈소스 고지</li></ul>
+        <p class="blurnote">메뉴바 아이콘의 <b>사용법</b>에서도 열 수 있어요.</p>
       </div>
     </div>
   </section>
@@ -303,9 +340,39 @@
     </div>
   </section>
 
+  <section class="section" id="feedback">
+    <header>
+      <span class="eyebrow">문의</span>
+      <h2>불편한 점, 갖고 싶은 기능을 알려 주세요</h2>
+      <p class="muted">앱의 <b>정보 → 문의하기</b>를 누르면 앱 버전이 들어간 메일 틀이 열려요. 앱이 없다면 아래로 바로 보내셔도 돼요.</p>
+    </header>
+    <div class="contact">
+      <a class="ghost" id="mail-feedback" href="mailto:hello@baryon.ai">메일로 의견 보내기</a>
+      <span class="mono">hello@baryon.ai</span>
+      <button type="button" class="ghost" id="copy-mail">주소 복사</button>
+    </div>
+  </section>
+
+  <section class="section" id="docs">
+    <header>
+      <span class="eyebrow">안내</span>
+      <h2>사용법과 약속</h2>
+      <p class="muted">앱의 <b>정보</b> 탭에도 같은 문서가 들어 있어요.</p>
+    </header>
+    <div class="docs">
+      <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/HELP.md"><b>사용법</b><span>탭별 기능, 녹음 넣기, 문제 해결</span></a>
+      <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/DATA.md"><b>데이터·AI 안내</b><span>AI에 무엇을 보내고 무엇을 안 보내는지</span></a>
+      <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/PRIVACY.md"><b>개인정보 처리방침</b><span>Baryon Labs가 받는 정보: 없음</span></a>
+      <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/TERMS.md"><b>이용약관</b><span>녹음 동의, AI 선택, 결과 확인</span></a>
+      <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/LICENSE.md"><b>소프트웨어 이용 허락</b><span>무상 사용 범위와 제한</span></a>
+      <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/THIRD_PARTY.md"><b>오픈소스 고지</b><span>Whisper, MLX 등 구성요소 라이선스</span></a>
+      <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/COPYRIGHT.md"><b>저작권·상표</b><span>DJI, Zoom 등 상표 안내</span></a>
+    </div>
+  </section>
+
   <footer>
-    <span>© 2026 Baryon Labs. All rights reserved. · <a href="https://github.com/baryonlabs/dji2note-releases/blob/main/LICENSE.md">이용 조건</a></span>
-    <span>의견·문의 hello@baryon.ai</span>
+    <span>© 2026 Baryon Labs. All rights reserved.</span>
+    <nav aria-label="안내 문서"><a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/HELP.md">사용법</a><a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/DATA.md">데이터·AI</a><a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/PRIVACY.md">개인정보</a><a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/TERMS.md">이용약관</a><a href="https://github.com/baryonlabs/dji2note-releases/blob/main/LICENSE.md">라이선스</a><a href="https://github.com/baryonlabs/dji2note-releases/blob/main/legal/THIRD_PARTY.md">오픈소스 고지</a><a href="#feedback">문의</a></nav>
   </footer>
 </div>
 <script>
@@ -318,6 +385,21 @@
         document.getElementById(o.getAttribute('aria-controls')).hidden = !on;
       });
     });
+  });
+  function mailto(subject, body) {
+    return 'mailto:hello@baryon.ai?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+  }
+  document.getElementById('mail-feedback').href = mailto('[DJI2Note 문의] ', '■ 종류: (불편·고장 / 기능 제안 / 질문 / 기타)\n\n■ 내용\n\n\n■ 앱 버전·Mac: ');
+  document.getElementById('notify-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var em = document.getElementById('notify-email').value.trim();
+    if (!em) return;
+    location.href = mailto('[DJI2Note] Windows 버전 알림 신청', 'Windows 버전이 나오면 이 주소로 알려 주세요: ' + em + '\n');
+    document.getElementById('notify-msg').textContent = '메일 앱에서 보내기를 누르면 신청이 끝나요. 고맙습니다!';
+  });
+  document.getElementById('copy-mail').addEventListener('click', function () {
+    var b = this;
+    try { navigator.clipboard.writeText('hello@baryon.ai').then(function () { b.textContent = '복사됨'; }); } catch (e) {}
   });
   document.querySelectorAll('[data-copy]').forEach(function (b) {
     b.addEventListener('click', function () {
