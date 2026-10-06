@@ -155,25 +155,22 @@
       </span>
     </div>
     <h1>마이크를 꽂으면,<br><span class="a">대화</span>가 <span class="b">회의록</span>이 됩니다.</h1>
-    <p class="lede">DJI 무선 마이크, Zoom, Mac 녹음을 <strong>내 Mac에서 받아쓰고</strong>, 누가 말했는지 나눈 뒤 <strong>상황에 맞는 요약</strong>을 만들어 Google Drive·Notion에 올려 둡니다.</p>
+    <p class="lede">DJI 무선 마이크, Zoom, Mac 녹음을 <strong>내 Mac·PC에서 받아쓰고</strong>, 누가 말했는지 나눈 뒤 <strong>상황에 맞는 요약</strong>을 만들어 Google Drive·Notion에 올려 둡니다.</p>
 
     <div class="get">
       <a class="btn" href="https://github.com/baryonlabs/dji2note-releases/releases/latest">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
-        최신 버전 받기
+        Mac용 받기
       </a>
       <small>Apple Silicon(M1 이상) Mac · macOS 14 이상 · 무료<br>받아쓰기 모델(약 1.6GB)은 설치할 때 함께 내려받아요</small>
     </div>
 
     <div class="notify" id="windows">
-      <b>Windows 버전 알림 받기</b>
-      <p>이메일을 남겨 주시면 Windows 버전이 나올 때 메일로 알려 드려요.</p>
-      <form id="notify-form">
-        <label for="notify-email" class="eyebrow" hidden>이메일</label>
-        <input id="notify-email" type="email" required placeholder="name@example.com" autocomplete="email">
-        <button type="submit">알림 신청</button>
-      </form>
-      <small id="notify-msg">메일 앱이 열리면 <b>보내기</b>만 눌러 주세요. 메일 앱이 없으면 hello@baryon.ai 로 "Windows 알림"이라고 보내 주셔도 돼요. 출시 안내에만 쓰고, 안내 후 지웁니다.</small>
+      <b>Windows 10·11 (64비트)</b>
+      <p>PowerShell에 붙여 넣으면 경고 없이 설치하고 바로 엽니다. 설치 파일로 받으면 처음 실행할 때 "Windows의 PC 보호"가 뜰 수 있어요 → <b>추가 정보 → 실행</b>.</p>
+      <div class="cmd"><pre id="cwin">irm https://baryonlabs.github.io/dji2note-releases/install.ps1 | iex</pre><button type="button" data-copy="cwin">복사</button></div>
+      <div><a class="ghost" href="https://github.com/baryonlabs/dji2note-releases/releases/latest/download/DJI2NoteSetup.exe">Windows용 받기 (DJI2NoteSetup.exe)</a></div>
+      <small>NVIDIA 그래픽카드가 있으면 더 빠르고 정확하게 받아씁니다(없으면 가벼운 모델로 자동 선택).</small>
     </div>
 
     <img class="illus" src="illus/hero.jpg" alt="클립 마이크를 단 두 사람이 대화하고, 노트북 위로 두 사람의 말이 색깔별로 나뉘어 올라가 할 일 목록이 있는 요약 한 장으로 합쳐지는 그림" width="1536" height="1024">
@@ -399,7 +396,7 @@
     return 'mailto:hello@baryon.ai?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
   }
   document.getElementById('mail-feedback').href = mailto('[DJI2Note 문의] ', '■ 종류: (불편·고장 / 기능 제안 / 질문 / 기타)\n\n■ 내용\n\n\n■ 앱 버전·Mac: ');
-  document.getElementById('notify-form').addEventListener('submit', function (e) {
+  var nf = document.getElementById('notify-form'); if (nf) nf.addEventListener('submit', function (e) {
     e.preventDefault();
     var em = document.getElementById('notify-email').value.trim();
     if (!em) return;

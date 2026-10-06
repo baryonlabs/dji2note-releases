@@ -11,6 +11,11 @@ DJI 무선 마이크·Zoom·Mac 녹음을 받아쓰고, 화자를 나눠 회의�
   curl -fsSL https://raw.githubusercontent.com/baryonlabs/dji2note-releases/main/install-app.sh | bash
   ```
 - 또는 DMG를 열고 앱을 Applications(또는 그 안의 Baryon 폴더)로 끌어 놓기 → 처음 열 때 「시스템 설정 → 개인정보 보호 및 보안 → 그래도 열기」
+- **Windows 10·11 (64비트)**: PowerShell에 붙여 넣기 (경고 없이 설치)
+  ```powershell
+  irm https://baryonlabs.github.io/dji2note-releases/install.ps1 | iex
+  ```
+  또는 Releases의 `DJI2NoteSetup.exe` 실행 (처음엔 "Windows의 PC 보호" → 추가 정보 → 실행)
 - 터미널(CLI)만 쓰려면:
   ```sh
   curl -fsSL https://raw.githubusercontent.com/baryonlabs/dji2note-releases/main/install.sh | bash

@@ -157,25 +157,22 @@
       </span>
     </div>
     <h1>Plug in your mic,<br>and the <span class="a">conversation</span> becomes <span class="b">meeting notes</span>.</h1>
-    <p class="lede">DJI2Note takes recordings from DJI wireless mics, Zoom and your Mac, <strong>transcribes them on your Mac</strong>, works out who said what, writes <strong>a summary that fits the situation</strong>, and files it in Google Drive or Notion.</p>
+    <p class="lede">DJI2Note takes recordings from DJI wireless mics, Zoom and your Mac, <strong>transcribes them on your Mac or PC</strong>, works out who said what, writes <strong>a summary that fits the situation</strong>, and files it in Google Drive or Notion.</p>
 
     <div class="get">
       <a class="btn" href="https://github.com/baryonlabs/dji2note-releases/releases/latest">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
-        Download the latest version
+        Download for Mac
       </a>
       <small>Apple Silicon (M1 or later) Mac · macOS 14 or later · Free<br>The transcription model (about 1.6 GB) is downloaded during setup</small>
     </div>
 
     <div class="notify" id="windows">
-      <b>Get notified about the Windows version</b>
-      <p>Leave your email and we'll let you know when the Windows version is out.</p>
-      <form id="notify-form">
-        <label for="notify-email" class="eyebrow" hidden>Email</label>
-        <input id="notify-email" type="email" required placeholder="name@example.com" autocomplete="email">
-        <button type="submit">Notify me</button>
-      </form>
-      <small id="notify-msg">When your mail app opens, just press <b>Send</b>. No mail app? Email hello@baryon.ai with "Windows notification". We only use your address for the launch announcement and delete it afterwards.</small>
+      <b>Windows 10 · 11 (64-bit)</b>
+      <p>Paste into PowerShell to install and open it with no warnings. If you use the installer file, Windows may show "Windows protected your PC" the first time → <b>More info → Run anyway</b>.</p>
+      <div class="cmd"><pre id="cwin">irm https://baryonlabs.github.io/dji2note-releases/install.ps1 | iex</pre><button type="button" data-copy="cwin">Copy</button></div>
+      <div><a class="ghost" href="https://github.com/baryonlabs/dji2note-releases/releases/latest/download/DJI2NoteSetup.exe">Download for Windows (DJI2NoteSetup.exe)</a></div>
+      <small>With an NVIDIA GPU transcription is faster and more accurate (CPU-only PCs get a lighter model automatically).</small>
     </div>
 
     <img class="illus" src="../illus/hero.jpg" alt="Two people wearing clip-on mics talk; above a laptop their words rise in two colors and merge into a single summary with a to-do list" width="1536" height="1024">
@@ -402,7 +399,7 @@
     return 'mailto:hello@baryon.ai?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
   }
   document.getElementById('mail-feedback').href = mailto('[DJI2Note feedback] ', '■ Type: (problem or bug / feature idea / question / other)\n\n■ Details\n\n\n■ App version and Mac: ');
-  document.getElementById('notify-form').addEventListener('submit', function (e) {
+  var nf = document.getElementById('notify-form'); if (nf) nf.addEventListener('submit', function (e) {
     e.preventDefault();
     var em = document.getElementById('notify-email').value.trim();
     if (!em) return;
