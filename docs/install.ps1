@@ -1,15 +1,20 @@
 <#
-DJI2Note 한 줄 설치 (Windows 10/11, 관리자 권한 불필요)
+DJI2Note one-line installer (Windows 10/11 x64, no admin rights needed)
 
   irm https://baryonlabs.github.io/dji2note-releases/install.ps1 | iex
 
-최신 DJI2NoteSetup.exe 를 GitHub Releases에서 받아 조용히 설치한다.
-PowerShell로 받은 파일에는 '인터넷에서 받은 파일' 표시(MOTW)가 붙지 않아 SmartScreen 경고 없이 설치된다.
-설치 위치: %LOCALAPPDATA%\Baryon.DJI2Note (엔진은 %LOCALAPPDATA%\DJI2Note)  ·  시작 메뉴와 바탕 화면에 바로 가기가 생긴다.
+Downloads the latest DJI2NoteSetup.exe from GitHub Releases and installs it silently.
+Files downloaded by PowerShell get no Mark-of-the-Web, so SmartScreen does not prompt.
+Installs to %LOCALAPPDATA%\Baryon.DJI2Note (engine: %LOCALAPPDATA%\DJI2Note), with Start menu and desktop shortcuts.
+
+NOTE: keep this file ASCII-only. GitHub Pages serves .ps1 without a UTF-8 charset, so `irm` would
+garble non-ASCII text. Korean messages are stored as base64 UTF-8 and decoded at run time.
 #>
 $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+function Ko([string]$b64) { [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($b64)) }
 
 $url = "https://github.com/baryonlabs/dji2note-releases/releases/latest/download/DJI2NoteSetup.exe"
 $dir = Join-Path $env:TEMP ("dji2note-setup-" + [Guid]::NewGuid().ToString("N"))
@@ -17,21 +22,21 @@ New-Item -ItemType Directory -Force -Path $dir | Out-Null
 $setup = Join-Path $dir "DJI2NoteSetup.exe"
 
 if ([Environment]::Is64BitOperatingSystem -eq $false) {
-    Write-Host "DJI2Note은 64비트(x64) Windows가 필요합니다." -ForegroundColor Red
+    Write-Host ((Ko "REpJMk5vdGXsnYAgNjTruYTtirgoeDY0KSBXaW5kb3dz6rCAIO2VhOyalO2VqeuLiOuLpC4=") + " / DJI2Note requires 64-bit (x64) Windows.") -ForegroundColor Red
     return
 }
 
-Write-Host "DJI2Note 내려받는 중… / Downloading DJI2Note…"
+Write-Host ((Ko "REpJMk5vdGUg64K066Ck67Cb64qUIOykkeKApg==") + " / Downloading DJI2Note...")
 Invoke-WebRequest -Uri $url -OutFile $setup -UseBasicParsing
 
-Write-Host "설치 중… / Installing…"
+Write-Host ((Ko "7ISk7LmYIOykkeKApg==") + " / Installing...")
 $p = Start-Process -FilePath $setup -ArgumentList "--silent" -PassThru -Wait
 Remove-Item -Recurse -Force $dir -ErrorAction SilentlyContinue
 
 $exe = Join-Path $env:LOCALAPPDATA "Baryon.DJI2Note\current\DJI2Note.exe"
 if ($p.ExitCode -eq 0 -and (Test-Path $exe)) {
-    Write-Host "✅ 설치 완료 — 시작 메뉴에서 DJI2Note를 실행하세요. / Installed — launch DJI2Note from the Start menu." -ForegroundColor Green
+    Write-Host ((Ko "7ISk7LmYIOyZhOujjCAtIOyLnOyekSDrqZTribTsl5DshJwgREpJMk5vdGXrpbwg7Iuk7ZaJ7ZWY7IS47JqULg==") + " / Installed - launch DJI2Note from the Start menu.") -ForegroundColor Green
     Start-Process -FilePath $exe
 } else {
-    Write-Host "설치하지 못했습니다 (코드 $($p.ExitCode)). https://baryonlabs.github.io/dji2note-releases/ 에서 직접 받아 주세요." -ForegroundColor Red
+    Write-Host (((Ko "7ISk7LmY7ZWY7KeAIOuqu+2WiOyKteuLiOuLpCAo7L2U65OcIHswfSkuIGh0dHBzOi8vYmFyeW9ubGFicy5naXRodWIuaW8vZGppMm5vdGUtcmVsZWFzZXMvIOyXkOyEnCDsp4HsoJEg67Cb7JWEIOyjvOyEuOyalC4=") -f $p.ExitCode) + " / Install failed. Download it from https://baryonlabs.github.io/dji2note-releases/") -ForegroundColor Red
 }
