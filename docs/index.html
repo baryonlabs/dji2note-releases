@@ -141,6 +141,91 @@
   footer nav { display: flex; flex-wrap: wrap; gap: 4px 14px; }
 
   footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 22px; }
+
+  /* ── Theme: 보라 형광 (AI) — 살짝 그라데이션 + 글라스 ── */
+  :root {
+    --bg: #f7f5fd; --paper: #ffffff; --ink: #1c1730; --muted: #655d7d; --line: #e3dcf3;
+    --a: #7c3aed; --b: #c026d3; --a-soft: #efe7ff; --b-soft: #fbe6fb; --code: #f2ecfd;
+    --grad: linear-gradient(120deg, #6d28d9 0%, #8b5cf6 42%, #c026d3 100%);
+    --grad-text: linear-gradient(100deg, #6d28d9 0%, #9333ea 45%, #c026d3 100%);
+    --glow: rgba(139, 92, 246, .35);
+    --glass: rgba(255, 255, 255, .62);
+    --glass-line: rgba(124, 58, 237, .16);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c0a15; --paper: #15121f; --ink: #ece8f8; --muted: #a49cbc; --line: #2a2440;
+      --a: #b794ff; --b: #f0a6fb; --a-soft: #241a44; --b-soft: #391741; --code: #1c1730;
+      --grad: linear-gradient(120deg, #7c3aed 0%, #a855f7 45%, #d946ef 100%);
+      --grad-text: linear-gradient(100deg, #c4a6ff 0%, #b98bff 40%, #f5a8ff 100%);
+      --glow: rgba(168, 85, 247, .45);
+      --glass: rgba(26, 21, 40, .58);
+      --glass-line: rgba(183, 148, 255, .18);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c0a15; --paper: #15121f; --ink: #ece8f8; --muted: #a49cbc; --line: #2a2440;
+    --a: #b794ff; --b: #f0a6fb; --a-soft: #241a44; --b-soft: #391741; --code: #1c1730;
+    --grad: linear-gradient(120deg, #7c3aed 0%, #a855f7 45%, #d946ef 100%);
+    --grad-text: linear-gradient(100deg, #c4a6ff 0%, #b98bff 40%, #f5a8ff 100%);
+    --glow: rgba(168, 85, 247, .45);
+    --glass: rgba(26, 21, 40, .58);
+    --glass-line: rgba(183, 148, 255, .18);
+    color-scheme: dark;
+  }
+
+  body {
+    background:
+      radial-gradient(1100px 560px at 8% -8%, color-mix(in srgb, #a855f7 22%, transparent), transparent 62%),
+      radial-gradient(900px 520px at 100% 6%, color-mix(in srgb, #d946ef 14%, transparent), transparent 60%),
+      radial-gradient(800px 600px at 50% 105%, color-mix(in srgb, #7c3aed 12%, transparent), transparent 65%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+  ::selection { background: color-mix(in srgb, var(--a) 28%, transparent); }
+  a { color: var(--a); }
+  :focus-visible { outline-color: var(--a); }
+  .eyebrow { color: var(--a); opacity: .85; }
+
+  /* 하이라이트 글씨: 그라데이션 + 은은한 빛 */
+  .hero h1 .a, .hero h1 .b {
+    background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 4px 18px var(--glow));
+  }
+  .steps li::before { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  h2 { background: linear-gradient(100deg, var(--ink) 55%, var(--a) 120%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  /* 프라이머리 버튼: 그라데이션 + 글로우 + 유리 하이라이트 */
+  .btn, .notify button, .tabs button[aria-selected="true"] {
+    background: var(--grad); color: #fff; border: 1px solid rgba(255, 255, 255, .18);
+    box-shadow: 0 10px 30px -8px var(--glow), inset 0 1px 0 rgba(255, 255, 255, .28);
+  }
+  .btn { position: relative; overflow: hidden; }
+  .btn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.22), transparent 55%); pointer-events: none; }
+  .btn:hover, .notify button:hover { filter: brightness(1.08) saturate(1.1); box-shadow: 0 14px 38px -8px var(--glow), inset 0 1px 0 rgba(255,255,255,.3); }
+
+  /* 글라스 카드 */
+  .card, .notify, .steps li, .docs a, .tablewrap, .note, .cmd button, .ghost, .tabs button {
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(14px) saturate(150%); backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid var(--glass-line);
+    box-shadow: 0 8px 30px -18px var(--glow);
+  }
+  .tabs button[aria-selected="true"] { border-color: transparent; }
+  .notify { border-left: 1px solid var(--glass-line); position: relative; }
+  .notify::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 3px; background: var(--grad); }
+  .note { border-left: 1px solid var(--glass-line); }
+  .docs a:hover, .card:hover { border-color: color-mix(in srgb, var(--a) 45%, transparent); }
+  .cmd pre, .notify input { background: color-mix(in srgb, var(--code) 80%, transparent); border: 1px solid var(--glass-line); }
+  .feature { border-top-color: var(--line); }
+  .feature:nth-child(3n+1) { border-image: var(--grad) 1; border-top-width: 2px; border-top-style: solid; }
+  .feature:nth-child(3n+2) { border-top-color: var(--b); }
+  .illus, .screen img { border-color: var(--glass-line); box-shadow: 0 24px 60px -28px var(--glow); }
+  .who.a { background: var(--a-soft); color: var(--a); } .who.b { background: var(--b-soft); color: var(--b); }
+  footer { border-top-color: var(--glass-line); }
+  .cmd button, .notify .cmd button { color: var(--ink); }
+  .ghost { color: var(--ink); }
 </style>
 </head>
 <body>
