@@ -92,6 +92,7 @@
   th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
   tr:last-child td { border-bottom: 0; }
   th { font-weight: 500; white-space: nowrap; }
+  @media (max-width: 520px) { th { white-space: normal; min-width: 7em; } }
   td { color: var(--muted); }
 
   /* Install steps */
@@ -226,6 +227,27 @@
   footer { border-top-color: var(--glass-line); }
   .cmd button, .notify .cmd button { color: var(--ink); }
   .ghost { color: var(--ink); }
+  /* 다운로드 버튼 두 개 + 안내 패널 + 토스트 */
+  .dl { display: flex; flex-wrap: wrap; gap: 12px; }
+  .guide { display: grid; gap: 10px; max-width: 760px; padding: 18px 20px; border-radius: 16px; position: relative;
+    background: var(--glass); -webkit-backdrop-filter: blur(14px) saturate(150%); backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid var(--glass-line); box-shadow: 0 16px 40px -22px var(--glow); animation: rise .25s ease-out; }
+  .guide::before { content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px; border-radius: 3px; background: var(--grad); }
+  .guide-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .guide ol { margin: 0; padding-left: 20px; color: var(--muted); font-size: 15px; display: grid; gap: 4px; }
+  .guide ol b, .guide p b { color: var(--ink); }
+  .guide p { color: var(--muted); font-size: 15px; }
+  .guide small { color: var(--muted); font-size: 13px; }
+  .guide code { font-size: 12px; background: var(--code); padding: 1px 5px; border-radius: 5px; word-break: break-all; }
+  .guide .x { border: 0; background: transparent; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; padding: 2px 6px; border-radius: 8px; }
+  .guide .x:hover { color: var(--ink); background: var(--a-soft); }
+  .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 10;
+    max-width: min(560px, calc(100vw - 32px)); padding: 12px 18px; border-radius: 14px; color: #fff; font-weight: 500; font-size: 15px;
+    background: var(--grad); box-shadow: 0 14px 40px -10px var(--glow), inset 0 1px 0 rgba(255,255,255,.25); animation: rise .25s ease-out; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .toast { animation-name: toastin; }
+  @keyframes toastin { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+  @media (prefers-reduced-motion: reduce) { .guide, .toast { animation: none; } }
 </style>
 </head>
 <body>
@@ -243,20 +265,30 @@
     <p class="lede">DJI 무선 마이크, Zoom, Mac 녹음을 <strong>내 Mac·PC에서 받아쓰고</strong>, 누가 말했는지 나눈 뒤 <strong>상황에 맞는 요약</strong>을 만들어 Google Drive·Notion에 올려 둡니다.</p>
 
     <div class="get">
-      <a class="btn" href="https://github.com/baryonlabs/dji2note-releases/releases/latest">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
-        Mac용 받기
-      </a>
-      <small>Apple Silicon(M1 이상) Mac · macOS 14 이상 · 무료<br>받아쓰기 모델(약 1.6GB)은 설치할 때 함께 내려받아요</small>
+      <div class="dl">
+        <a class="btn" id="dl-mac" data-guide="guide-mac" href="https://github.com/baryonlabs/dji2note-releases/releases/latest/download/DJI2Note.dmg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Mac용 받기</a>
+        <a class="btn" id="dl-win" data-guide="windows" href="https://github.com/baryonlabs/dji2note-releases/releases/latest/download/DJI2NoteSetup.exe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Windows용 받기</a>
+      </div>
+      <small>Mac: Apple Silicon(M1 이상) · macOS 14 이상 &nbsp;·&nbsp; Windows: 10·11 (64비트) &nbsp;·&nbsp; 무료<br>받아쓰기 모델은 설치할 때 함께 내려받아요</small>
     </div>
 
-    <div class="notify" id="windows">
-      <b>Windows 10·11 (64비트)</b>
-      <p>PowerShell에 붙여 넣으면 경고 없이 설치하고 바로 엽니다. 설치 파일로 받으면 처음 실행할 때 "Windows의 PC 보호"가 뜰 수 있어요 → <b>추가 정보 → 실행</b>.</p>
+    <div class="guide" id="guide-mac" hidden>
+      <div class="guide-head"><b>Mac — 받은 다음</b><button type="button" class="x" data-close aria-label="닫기">×</button></div>
+      <ol><li>받은 <b>DJI2Note.dmg</b>를 열고 DJI2Note를 <b>응용 프로그램</b>(또는 그 안의 Baryon 폴더)으로 끌어 놓기</li><li>처음 열 때 "확인할 수 없음" 경고가 뜨면: 시스템 설정 → 개인정보 보호 및 보안 → 맨 아래 <b>그래도 열기</b></li><li>앱이 열리면 설정 마법사(엔진 설치 → 요약 AI → Google 계정)를 따라가면 끝</li></ol>
+      <p>경고 없이 한 번에 설치하려면 터미널에 붙여 넣기:</p>
+      <div class="cmd"><pre id="cmac">curl -fsSL https://raw.githubusercontent.com/baryonlabs/dji2note-releases/main/install-app.sh | bash</pre><button type="button" data-copy="cmac">복사</button></div>
+      <small>"손상되었기 때문에 열 수 없습니다"가 나오면 터미널에서: <code>xattr -dr com.apple.quarantine "/Applications/Baryon/DJI2Note.app"</code></small>
+    </div>
+
+    <div class="guide" id="windows" hidden>
+      <div class="guide-head"><b>Windows — 받은 다음</b><button type="button" class="x" data-close aria-label="닫기">×</button></div>
+      <ol><li>받은 <b>DJI2NoteSetup.exe</b> 실행 — 설치가 끝나면 바로 열립니다</li><li>"Windows의 PC 보호" 창이 뜨면 <b>추가 정보 → 실행</b> (아직 코드 서명 전이라 처음 한 번 뜰 수 있어요)</li><li>앱이 열리면 설정 마법사(엔진 설치 → 요약 AI → Google 계정)를 따라가면 끝</li></ol>
+      <p>경고 없이 한 번에 설치하려면 PowerShell에 붙여 넣기:</p>
       <div class="cmd"><pre id="cwin">irm https://baryonlabs.github.io/dji2note-releases/install.ps1 | iex</pre><button type="button" data-copy="cwin">복사</button></div>
-      <div><a class="ghost" href="https://github.com/baryonlabs/dji2note-releases/releases/latest/download/DJI2NoteSetup.exe">Windows용 받기 (DJI2NoteSetup.exe)</a></div>
       <small>NVIDIA 그래픽카드가 있으면 더 빠르고 정확하게 받아씁니다(없으면 가벼운 모델로 자동 선택).</small>
     </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
     <img class="illus" src="illus/hero.jpg" alt="클립 마이크를 단 두 사람이 대화하고, 노트북 위로 두 사람의 말이 색깔별로 나뉘어 올라가 할 일 목록이 있는 요약 한 장으로 합쳐지는 그림" width="1536" height="1024">
 
@@ -492,6 +524,23 @@
     var b = this;
     try { navigator.clipboard.writeText('hello@baryon.ai').then(function () { b.textContent = '복사됨'; }); } catch (e) {}
   });
+  var toastTimer;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, 5000);
+  }
+  function showGuide(id) {
+    ['guide-mac', 'windows'].forEach(function (g) { document.getElementById(g).hidden = g !== id; });
+    var el = document.getElementById(id);
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  document.getElementById('dl-mac').addEventListener('click', function () { showGuide('guide-mac'); toast('Mac용 내려받기를 시작했어요 — 아래 설치 안내를 확인하세요'); });
+  document.getElementById('dl-win').addEventListener('click', function () { showGuide('windows'); toast('Windows용 내려받기를 시작했어요 — 아래 설치 안내를 확인하세요'); });
+  document.querySelectorAll('[data-close]').forEach(function (b) {
+    b.addEventListener('click', function () { b.closest('.guide').hidden = true; });
+  });
+  if (location.hash === '#windows') showGuide('windows');
   document.querySelectorAll('[data-copy]').forEach(function (b) {
     b.addEventListener('click', function () {
       var t = document.getElementById(b.dataset.copy).textContent;

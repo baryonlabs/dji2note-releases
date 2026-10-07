@@ -228,6 +228,27 @@
   footer { border-top-color: var(--glass-line); }
   .cmd button, .notify .cmd button { color: var(--ink); }
   .ghost { color: var(--ink); }
+  /* 다운로드 버튼 두 개 + 안내 패널 + 토스트 */
+  .dl { display: flex; flex-wrap: wrap; gap: 12px; }
+  .guide { display: grid; gap: 10px; max-width: 760px; padding: 18px 20px; border-radius: 16px; position: relative;
+    background: var(--glass); -webkit-backdrop-filter: blur(14px) saturate(150%); backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid var(--glass-line); box-shadow: 0 16px 40px -22px var(--glow); animation: rise .25s ease-out; }
+  .guide::before { content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px; border-radius: 3px; background: var(--grad); }
+  .guide-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .guide ol { margin: 0; padding-left: 20px; color: var(--muted); font-size: 15px; display: grid; gap: 4px; }
+  .guide ol b, .guide p b { color: var(--ink); }
+  .guide p { color: var(--muted); font-size: 15px; }
+  .guide small { color: var(--muted); font-size: 13px; }
+  .guide code { font-size: 12px; background: var(--code); padding: 1px 5px; border-radius: 5px; word-break: break-all; }
+  .guide .x { border: 0; background: transparent; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; padding: 2px 6px; border-radius: 8px; }
+  .guide .x:hover { color: var(--ink); background: var(--a-soft); }
+  .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 10;
+    max-width: min(560px, calc(100vw - 32px)); padding: 12px 18px; border-radius: 14px; color: #fff; font-weight: 500; font-size: 15px;
+    background: var(--grad); box-shadow: 0 14px 40px -10px var(--glow), inset 0 1px 0 rgba(255,255,255,.25); animation: rise .25s ease-out; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .toast { animation-name: toastin; }
+  @keyframes toastin { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+  @media (prefers-reduced-motion: reduce) { .guide, .toast { animation: none; } }
 </style>
 </head>
 <body>
@@ -245,20 +266,30 @@
     <p class="lede">DJI2Note takes recordings from DJI wireless mics, Zoom and your Mac, <strong>transcribes them on your Mac or PC</strong>, works out who said what, writes <strong>a summary that fits the situation</strong>, and files it in Google Drive or Notion.</p>
 
     <div class="get">
-      <a class="btn" href="https://github.com/baryonlabs/dji2note-releases/releases/latest">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
-        Download for Mac
-      </a>
-      <small>Apple Silicon (M1 or later) Mac · macOS 14 or later · Free<br>The transcription model (about 1.6 GB) is downloaded during setup</small>
+      <div class="dl">
+        <a class="btn" id="dl-mac" data-guide="guide-mac" href="https://github.com/baryonlabs/dji2note-releases/releases/latest/download/DJI2Note.dmg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Download for Mac</a>
+        <a class="btn" id="dl-win" data-guide="windows" href="https://github.com/baryonlabs/dji2note-releases/releases/latest/download/DJI2NoteSetup.exe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>Download for Windows</a>
+      </div>
+      <small>Mac: Apple Silicon (M1 or later) · macOS 14+ &nbsp;·&nbsp; Windows: 10 · 11 (64-bit) &nbsp;·&nbsp; Free<br>The transcription model is downloaded during setup</small>
     </div>
 
-    <div class="notify" id="windows">
-      <b>Windows 10 · 11 (64-bit)</b>
-      <p>Paste into PowerShell to install and open it with no warnings. If you use the installer file, Windows may show "Windows protected your PC" the first time → <b>More info → Run anyway</b>.</p>
+    <div class="guide" id="guide-mac" hidden>
+      <div class="guide-head"><b>Mac — after downloading</b><button type="button" class="x" data-close aria-label="Close">×</button></div>
+      <ol><li>Open <b>DJI2Note.dmg</b> and drag DJI2Note into <b>Applications</b> (or the Baryon folder inside it)</li><li>If macOS says it can't verify the app the first time: System Settings → Privacy &amp; Security → <b>Open Anyway</b> at the bottom</li><li>When the app opens, follow the setup wizard (engine → summary AI → Google account)</li></ol>
+      <p>To install in one step with no warnings, paste into Terminal:</p>
+      <div class="cmd"><pre id="cmac">curl -fsSL https://raw.githubusercontent.com/baryonlabs/dji2note-releases/main/install-app.sh | bash</pre><button type="button" data-copy="cmac">Copy</button></div>
+      <small>If you see "is damaged and can't be opened", run in Terminal: <code>xattr -dr com.apple.quarantine "/Applications/Baryon/DJI2Note.app"</code></small>
+    </div>
+
+    <div class="guide" id="windows" hidden>
+      <div class="guide-head"><b>Windows — after downloading</b><button type="button" class="x" data-close aria-label="Close">×</button></div>
+      <ol><li>Run <b>DJI2NoteSetup.exe</b> — the app opens when setup finishes</li><li>If "Windows protected your PC" appears, choose <b>More info → Run anyway</b> (the installer isn't code-signed yet)</li><li>When the app opens, follow the setup wizard (engine → summary AI → Google account)</li></ol>
+      <p>To install in one step with no warnings, paste into PowerShell:</p>
       <div class="cmd"><pre id="cwin">irm https://baryonlabs.github.io/dji2note-releases/install.ps1 | iex</pre><button type="button" data-copy="cwin">Copy</button></div>
-      <div><a class="ghost" href="https://github.com/baryonlabs/dji2note-releases/releases/latest/download/DJI2NoteSetup.exe">Download for Windows (DJI2NoteSetup.exe)</a></div>
       <small>With an NVIDIA GPU transcription is faster and more accurate (CPU-only PCs get a lighter model automatically).</small>
     </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
     <img class="illus" src="../illus/hero.jpg" alt="Two people wearing clip-on mics talk; above a laptop their words rise in two colors and merge into a single summary with a to-do list" width="1536" height="1024">
 
@@ -495,6 +526,23 @@
     var b = this;
     try { navigator.clipboard.writeText('hello@baryon.ai').then(function () { b.textContent = 'Copied'; }); } catch (e) {}
   });
+  var toastTimer;
+  function toast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, 5000);
+  }
+  function showGuide(id) {
+    ['guide-mac', 'windows'].forEach(function (g) { document.getElementById(g).hidden = g !== id; });
+    var el = document.getElementById(id);
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  document.getElementById('dl-mac').addEventListener('click', function () { showGuide('guide-mac'); toast('Your Mac download has started — see the install steps below'); });
+  document.getElementById('dl-win').addEventListener('click', function () { showGuide('windows'); toast('Your Windows download has started — see the install steps below'); });
+  document.querySelectorAll('[data-close]').forEach(function (b) {
+    b.addEventListener('click', function () { b.closest('.guide').hidden = true; });
+  });
+  if (location.hash === '#windows') showGuide('windows');
   document.querySelectorAll('[data-copy]').forEach(function (b) {
     b.addEventListener('click', function () {
       var t = document.getElementById(b.dataset.copy).textContent;
